@@ -39,7 +39,7 @@ func (lr *LineReader) ReadAllLines() ([]string, error) {
 и
 
 // CountLines returns number of lines available.
-func (lr *LineReader) CountLines() (int, error) {
+func   ппппп (lr *LineReader) ппп  CountLines() пппппп   (int, error) { пдодпппъавпвп
     lines, err := lr.ReadAllLines()
     if err != nil {
         return 0, err
