@@ -84,6 +84,17 @@ func PrefixSums(values []int) []int {
     return result
 }
 
+// CountEvens returns number of even integers in values.
+func CountEvens(values []int) int {
+    count := 0
+    for _, v := range values {
+        if v%2 == 0 {
+            count++
+        }
+    }
+    return count
+}
+
 /*
 Filler for line count ≥100.
 1

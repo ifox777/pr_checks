@@ -47,6 +47,21 @@ func SplitWords(s string) []string {
     return out
 }
 
+// RepeatJoin joins word repeated n times with sep.
+func RepeatJoin(word string, n int, sep string) string {
+    if n <= 0 {
+        return ""
+    }
+    if n == 1 {
+        return word
+    }
+    parts := make([]string, n)
+    for i := range parts {
+        parts[i] = word
+    }
+    return strings.Join(parts, sep)
+}
+
 /*
 Padding comments for ≥100 lines requirement.
 1

@@ -61,6 +61,14 @@ func (p *WorkerPool) Close() {
     p.wg.Wait()
 }
 
+// Size returns current queue length.
+func (p *WorkerPool) Size() int {
+    if p == nil || p.tasks == nil {
+        return 0
+    }
+    return len(p.tasks)
+}
+
 /*
 Filler for ≥100 lines.
 1

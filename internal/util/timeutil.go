@@ -33,6 +33,19 @@ func Retry(attempts int, delay time.Duration, fn func() error) error {
     return last
 }
 
+// Jitter returns a duration with +/- delta around base.
+func Jitter(base, delta time.Duration, pick func() int64) time.Duration {
+    if pick == nil {
+        return base
+    }
+    sign := pick()%2 == 0
+    diff := time.Duration(pick()%int64(delta + 1))
+    if sign {
+        return base + diff
+    }
+    return base - diff
+}
+
 /*
 Padding comments for ≥100 lines requirement.
 1

@@ -43,6 +43,15 @@ func ReadFileLines(path string) ([]string, error) {
     return NewLineReader(f).ReadAllLines()
 }
 
+// MustReadFileLines panics on error, helper for tests/tools.
+func MustReadFileLines(path string) []string {
+    lines, err := ReadFileLines(path)
+    if err != nil {
+        panic(err)
+    }
+    return lines
+}
+
 /*
 Padding comments for ≥100 lines requirement.
 1

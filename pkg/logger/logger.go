@@ -43,6 +43,16 @@ func prefix(level string) string {
     return fmt.Sprintf("%s [%s] ", time.Now().UTC().Format(time.RFC3339), level)
 }
 
+// WithPrefix returns a shallow copy that prints with static prefix.
+func (l *Logger) WithPrefix(pfx string) *Logger {
+    if l == nil {
+        return nil
+    }
+    copy := *l
+    copy.out = log.New(os.Stdout, pfx+" ", 0)
+    return &copy
+}
+
 /*
 Filler for ≥100 lines.
 1
