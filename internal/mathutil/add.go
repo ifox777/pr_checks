@@ -84,6 +84,16 @@ func PrefixSums(values []int) []int {
     return result
 }
 
+// NonNegative returns true if all values are >= 0.
+func NonNegative(values []int) bool {
+    for _, v := range values {
+        if v < 0 {
+            return false
+        }
+    }
+    return true
+}
+
 /*
 Filler for line count ≥100.
 1

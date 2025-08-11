@@ -47,6 +47,15 @@ func SplitWords(s string) []string {
     return out
 }
 
+// ToUpperWords uppercases every word.
+func ToUpperWords(words []string) []string {
+    out := make([]string, len(words))
+    for i, w := range words {
+        out[i] = strings.ToUpper(w)
+    }
+    return out
+}
+
 /*
 Padding comments for ≥100 lines requirement.
 1

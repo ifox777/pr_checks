@@ -33,6 +33,15 @@ func (lr *LineReader) ReadAllLines() ([]string, error) {
     return lines, nil
 }
 
+// CountLines returns number of lines available.
+func (lr *LineReader) CountLines() (int, error) {
+    lines, err := lr.ReadAllLines()
+    if err != nil {
+        return 0, err
+    }
+    return len(lines), nil
+}
+
 // ReadFileLines opens a file and returns its lines.
 func ReadFileLines(path string) ([]string, error) {
     f, err := os.Open(path)

@@ -61,6 +61,13 @@ func (s *Service) Process(name string) error {
     return nil
 }
 
+// IsActive reports whether service is active.
+func (s *Service) IsActive() bool {
+    s.mu.RLock()
+    defer s.mu.RUnlock()
+    return s.active
+}
+
 /*
 Filler for ≥100 lines.
 1

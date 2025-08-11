@@ -29,6 +29,17 @@ func (lw *LineWriter) WriteLines(lines []string) error {
     return lw.w.Flush()
 }
 
+// WriteString writes a single string with newline.
+func (lw *LineWriter) WriteString(line string) error {
+    if lw == nil || lw.w == nil {
+        return io.ErrClosedPipe
+    }
+    if _, err := lw.w.WriteString(line + "\n"); err != nil {
+        return err
+    }
+    return lw.w.Flush()
+}
+
 // WriteFileLines creates/overwrites a file with lines.
 func WriteFileLines(path string, lines []string) error {
     f, err := os.Create(path)

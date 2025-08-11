@@ -6,12 +6,19 @@ import (
 
     mathutil "example.com/pr_check/internal/mathutil"
     "example.com/pr_check/internal/util"
+    "example.com/pr_check/pkg/config"
     "example.com/pr_check/pkg/logger"
     "example.com/pr_check/pkg/service"
 )
 
 func main() {
     log := logger.New()
+    cfg, err := config.FromEnv()
+    if err != nil {
+        log.Errorf("config error: %v", err)
+    } else {
+        log.Infof("config: name=%s addr=%s", cfg.AppName, cfg.Addr())
+    }
     srv := service.NewService(log)
 
     if err := srv.Start(); err != nil {
