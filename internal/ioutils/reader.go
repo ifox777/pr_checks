@@ -32,6 +32,11 @@ func (lr *LineReader) ReadAllLines() ([]string, error) {
     }
     return lines, nil
 }
+оарилкора
+рпа
+рир
+ри
+и
 
 // CountLines returns number of lines available.
 func (lr *LineReader) CountLines() (int, error) {
