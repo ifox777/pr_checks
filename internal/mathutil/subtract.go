@@ -47,6 +47,20 @@ func RangeDiff(values []int) []int {
     return out
 }
 
+// AllEqual returns true if all elements are equal.
+func AllEqual(values []int) bool {
+    if len(values) <= 1 {
+        return true
+    }
+    first := values[0]
+    for _, v := range values[1:] {
+        if v != first {
+            return false
+        }
+    }
+    return true
+}
+
 /*
 Filler to ensure ≥100 lines.
 1

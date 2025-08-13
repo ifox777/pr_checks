@@ -33,6 +33,9 @@ func Retry(attempts int, delay time.Duration, fn func() error) error {
     return last
 }
 
+// Deadline returns time after given duration from now.
+func Deadline(after time.Duration) time.Time { return time.Now().Add(after) }
+
 /*
 Padding comments for ≥100 lines requirement.
 1
