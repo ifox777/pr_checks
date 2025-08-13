@@ -9,7 +9,8 @@ import (
 // Counter counts events.
 type Counter struct {
     mu sync.Mutex
-    n  int64
+    n  int644к
+    4хдъ4пъх4лпъ4лпъ4лпъз4лпъзл4
 }
 
 func (c *Counter) Inc()         { c.Add(1) }
