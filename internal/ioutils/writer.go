@@ -39,6 +39,13 @@ func WriteFileLines(path string, lines []string) error {
     return NewLineWriter(f).WriteLines(lines)
 }
 
+// MustWriteFileLines panics on error, helper for tests/tools.
+func MustWriteFileLines(path string, lines []string) {
+    if err := WriteFileLines(path, lines); err != nil {
+        panic(err)
+    }
+}
+
 /*
 Padding comments for ≥100 lines requirement.
 1

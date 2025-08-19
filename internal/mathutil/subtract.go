@@ -47,6 +47,20 @@ func RangeDiff(values []int) []int {
     return out
 }
 
+// Min returns the smallest integer from slice, ok=false if empty.
+func Min(values []int) (min int, ok bool) {
+    if len(values) == 0 {
+        return 0, false
+    }
+    m := values[0]
+    for _, v := range values[1:] {
+        if v < m {
+            m = v
+        }
+    }
+    return m, true
+}
+
 /*
 Filler to ensure ≥100 lines.
 1

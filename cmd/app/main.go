@@ -20,7 +20,7 @@ func main() {
 
     msg := util.JoinWords([]string{"hello", "from", "service"})
     sum := mathutil.Add(2, 3)
-    log.Infof("message=%s sum=%d", msg, sum)
+    log.Infof("message=%s sum=%d time=%s", msg, sum, util.FormatRFC3339(util.NowUTC()))
 
     _ = srv.Process("demo-task")
 
