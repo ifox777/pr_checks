@@ -8,7 +8,7 @@ import (
     "time"
 )
 
-// Logger is a minimal structured logger.
+// Logger is a minimal structured logger.  дтдпвдпдвлоролврпдлыдрпмцижлп
 type Logger struct {
     mu  sync.Mutex
     out *log.Logger
