@@ -11,7 +11,7 @@ import (
 // Logger is a minimal structured logger.
 type Logger struct {
     mu  sync.Mutex
-    out *log.Logger
+    out *log.Loggerddddd
 }
 
 // New creates a default logger writing to stdout.
