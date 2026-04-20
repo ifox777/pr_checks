@@ -1,0 +1,65 @@
+name: Issue Rules Check
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  check:
+    if: github.event.sender.type != 'Bot'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Reviewer
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools "Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh issue view:*),Bash(gh label list),Bash(gh label create:*)"'
+          prompt: |
+            Ты — ревьюер issues в репозитории ${{ github.repository }}.
+            Issue №${{ github.event.issue.number }} было ${{ github.event.action }} пользователем @${{ github.event.issue.user.login }}.
+
+            Правила для issues в этом репозитории:
+
+            1. **Заголовок** должен начинаться с тега в квадратных скобках:
+               `[Bug]`, `[Feature]`, `[Docs]`, `[Chore]`, `[Question]`.
+               Пример: `[Bug] Падение контейнера при старте`.
+               Заголовок должен быть 10-100 символов, не в ВЕРХНЕМ РЕГИСТРЕ, без эмодзи в начале.
+
+            2. **Описание** (body) должно быть не короче 50 символов и содержать секции:
+               - `## Описание` — что произошло / что нужно сделать
+               - `## Ожидаемый результат` — как должно работать
+               - `## Шаги воспроизведения` (только для `[Bug]`) или `## Критерии приёмки` (для `[Feature]`)
+
+            3. **Безопасность**: в теле issue не должно быть секретов:
+               токенов (`ghp_`, `gho_`, `sk-`, `AKIA`), паролей, приватных ключей
+               (`-----BEGIN ... PRIVATE KEY-----`). Если нашёл — ОБЯЗАТЕЛЬНО попроси автора
+               отозвать скомпрометированный секрет и удали его из текста при правке.
+
+            4. **Метки (labels)**: на основе тега в заголовке проставь соответствующую метку:
+               `[Bug]` → `bug`, `[Feature]` → `enhancement`, `[Docs]` → `documentation`,
+               `[Chore]` → `chore`, `[Question]` → `question`.
+               Если метки нет — создай её через `gh label create <name>`.
+
+            Действуй так:
+            1. Прочитай issue через `gh issue view ${{ github.event.issue.number }} --repo ${{ github.repository }}`.
+            2. Проверь каждое правило. Собери список нарушений.
+            3. Если нарушений НЕТ — оставь короткий положительный комментарий
+               `✅ Issue соответствует всем правилам` и проставь нужную метку.
+            4. Если нарушения ЕСТЬ:
+               - Исправь что можешь автоматически через `gh issue edit` (нормализуй заголовок,
+                 допиши недостающие секции-шаблоны с плейсхолдерами `TODO: ...`,
+                 удали секреты если они обнаружены).
+               - Оставь комментарий через `gh issue comment` с чек-листом:
+                 какие правила нарушены, что ты исправил, что должен дописать автор.
+               - Проставь подходящую метку типа.
+
+            Будь лаконичен. Комментарий — не длиннее 15 строк. Пиши по-русски.
