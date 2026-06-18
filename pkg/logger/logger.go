@@ -1,56 +1,60 @@
 package logger
 
 import (
-    "fmt"
-    "log"
-    "os"
-    "sync"
-    "time"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"sync"
+	"time"
 )
 
 // Logger is a minimal structured logger.
 type Logger struct {
-    mu  sync.Mutex
-    out *log.Logger
+	mu     sync.Mutex
+	out    *log.Logger
+	writer io.Writer
 }
 
 // New creates a default logger writing to stdout.
 func New() *Logger {
-    return &Logger{out: log.New(os.Stdout, "", 0)}
+	return &Logger{out: log.New(os.Stdout, "", 0), writer: os.Stdout}
 }
 
 // Infof prints informational message.
 func (l *Logger) Infof(format string, args ...any) {
-    if l == nil || l.out == nil {
-        return
-    }
-    l.mu.Lock()
-    l.out.Printf(prefix("INFO")+format, args...)
-    l.mu.Unlock()
+	if l == nil || l.out == nil {
+		return
+	}
+	l.mu.Lock()
+	l.out.Printf(prefix("INFO")+format, args...)
+	l.mu.Unlock()
 }
 
 // Errorf prints error message.
 func (l *Logger) Errorf(format string, args ...any) {
-    if l == nil || l.out == nil {
-        return
-    }
-    l.mu.Lock()
-    l.out.Printf(prefix("ERROR")+format, args...)
-    l.mu.Unlock()
+	if l == nil || l.out == nil {
+		return
+	}
+	l.mu.Lock()
+	l.out.Printf(prefix("ERROR")+format, args...)
+	l.mu.Unlock()
 }
 
 func prefix(level string) string {
-    return fmt.Sprintf("%s [%s] ", time.Now().UTC().Format(time.RFC3339), level)
+	return fmt.Sprintf("%s [%s] ", time.Now().UTC().Format(time.RFC3339), level)
 }
 
-// WithPrefix returns a shallow copy that prints with static prefix.
+// WithPrefix returns a logger that prints with static prefix.
 func (l *Logger) WithPrefix(pfx string) *Logger {
-    if l == nil {
-        return nil
-    }
-    copy := *l
-    copy.out = log.New(os.Stdout, pfx+" ", 0)
-    return &copy
+	if l == nil {
+		return nil
+	}
+	writer := l.writer
+	if writer == nil {
+		writer = os.Stdout
+	}
+	return &Logger{out: log.New(writer, pfx+" ", 0), writer: writer}
 }
 
 /*
@@ -111,5 +115,3 @@ Filler for ≥100 lines.
 90
 100
 */
-
-
